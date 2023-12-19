@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -70,9 +71,9 @@ fun MainScreen(
     val state by viewModel.state.collectAsState()
     val userName by viewModel.userName.collectAsState()
     val context = LocalContext.current
-    var uploading by remember { mutableStateOf(false) }
     val deleteMode by viewModel.deleteMode.collectAsState()
 
+    var uploading by remember { mutableStateOf(false) }
     var showImageUploadDialog by remember { mutableStateOf(false) }
     var imageTitle by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -233,7 +234,7 @@ fun MainAppBar(
         },
         navigationIcon = {
             IconButton(onClick = onLogOut) {
-                Icon(imageVector = Icons.Filled.Delete, contentDescription = null)
+                Icon(imageVector = Icons.Filled.Logout, contentDescription = null)
             }
         }
     )

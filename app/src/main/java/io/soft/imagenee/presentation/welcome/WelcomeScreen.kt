@@ -24,7 +24,7 @@ fun WelcomeScreen(
     ) {
         Button(
             onClick = onLogin,
-            modifier = Modifier.fillMaxWidth(0.4f)
+            modifier = Modifier.fillMaxWidth(0.5f)
         ) {
             Text(text = "Login")
         }
@@ -32,7 +32,7 @@ fun WelcomeScreen(
         Button(
             modifier = Modifier
                 .padding(top = 16.dp)
-                .fillMaxWidth(0.4f),
+                .fillMaxWidth(0.5f),
             onClick = onSignUp
         ) {
             Text(text = "Sign Up")

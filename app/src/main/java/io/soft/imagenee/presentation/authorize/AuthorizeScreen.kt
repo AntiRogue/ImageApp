@@ -1,4 +1,4 @@
-package io.soft.imagenee.presentation.login
+package io.soft.imagenee.presentation.authorize
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -7,9 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -23,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -42,6 +49,8 @@ fun AuthorizeScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    var passwordVisibility: Boolean by remember { mutableStateOf(false) }
+
     LaunchedEffect(key1 = Unit) {
         viewModel
             .effect
@@ -55,7 +64,9 @@ fun AuthorizeScreen(
     }
 
     Column(
-        modifier = Modifier.padding(16.dp).fillMaxSize(),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -104,30 +115,44 @@ fun AuthorizeScreen(
                 .padding(top = 8.dp)
                 .fillMaxWidth(),
             value = password,
+            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             onValueChange = {
                 password = it
             },
             label = {
                 Text(text = "Password...")
+            },
+            trailingIcon = {
+                IconButton(onClick = {
+                    passwordVisibility = !passwordVisibility
+                }) {
+                    Icon(
+                        if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        null
+                    )
+                }
             }
         )
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(top = 16.dp),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = onBack,
-                modifier = Modifier.fillMaxWidth(0.4f)
+                modifier = Modifier
+                    .weight(0.4f)
+                    .padding(4.dp),
+                onClick = onBack
             ) {
                 Text(text = "Back")
             }
 
             Button(
-                modifier = Modifier.fillMaxWidth(0.4f),
+                modifier = Modifier
+                    .weight(0.4f)
+                    .padding(4.dp),
                 onClick = {
                     if (loading.not()) {
                         if (isSignIn) {
@@ -138,10 +163,8 @@ fun AuthorizeScreen(
                     }
                 }
             ) {
-                if (loading)
-                    CircularProgressIndicator(modifier = Modifier.scale(0.5f))
-                else
-                    Text(text = if (isSignIn) "Login" else "Sign Up")
+                if (loading) CircularProgressIndicator(modifier = Modifier.scale(0.5f))
+                else Text(text = if (isSignIn) "Login" else "Sign Up")
             }
         }
     }

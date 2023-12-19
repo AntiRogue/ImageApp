@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import io.soft.imagenee.presentation.login.AuthorizeScreen
+import io.soft.imagenee.presentation.authorize.AuthorizeScreen
 import io.soft.imagenee.presentation.main.MainScreen
 import io.soft.imagenee.presentation.main.single.ShowImageScreen
 import io.soft.imagenee.presentation.welcome.WelcomeScreen

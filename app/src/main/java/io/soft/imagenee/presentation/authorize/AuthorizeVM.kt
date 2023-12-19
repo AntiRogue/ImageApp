@@ -1,4 +1,4 @@
-package io.soft.imagenee.presentation.login
+package io.soft.imagenee.presentation.authorize
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,6 +30,17 @@ class AuthorizeVM @Inject constructor(
         email: String,
         password: String
     ) {
+        if (
+            password.isBlank()
+            || email.isBlank()
+            || email.contains("@").not()
+        ) {
+            viewModelScope.launch {
+                _effect.emit(Effect.Error(message = "Invalid inputs"))
+            }
+            return
+        }
+
         _loading.update { true }
         viewModelScope.launch {
             repository
@@ -38,7 +49,7 @@ class AuthorizeVM @Inject constructor(
                     localStorage.put(email)
                     _effect.emit(Effect.AuthorizeSuccess)
                 }
-                .onFailure { _effect.emit(Effect.Error(it.message ?: "Unknown Error")) }
+                .onFailure { _effect.emit(Effect.Error(it.message ?: "Something went wrong :(")) }
         }
         _loading.update { false }
     }
@@ -51,9 +62,10 @@ class AuthorizeVM @Inject constructor(
     ) {
         if (
             name.isBlank()
-            && surname.isBlank()
-            && email.isBlank()
-            && password.isBlank()
+            || surname.isBlank()
+            || email.isBlank()
+            || password.isBlank()
+            || email.contains("@").not()
         ) {
             viewModelScope.launch {
                 _effect.emit(Effect.Error("Invalid inputs"))
@@ -69,7 +81,7 @@ class AuthorizeVM @Inject constructor(
                     localStorage.put(email)
                     _effect.emit(Effect.AuthorizeSuccess)
                 }
-                .onFailure { _effect.emit(Effect.Error(it.message ?: "Unknown error")) }
+                .onFailure { _effect.emit(Effect.Error(it.message ?: "Something went wrong :(")) }
         }
         _loading.update { false }
     }
