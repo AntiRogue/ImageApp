@@ -56,9 +56,7 @@ class MainVM @Inject constructor(
                 .onSuccess { list -> _state.update { ImagesState.Success(list) } }
                 .onFailure { error ->
                     _state.update {
-                        ImagesState.Error(
-                            error.message ?: "Unknown error"
-                        )
+                        ImagesState.Error(error.message)
                     }
                 }
         }
@@ -141,7 +139,15 @@ sealed interface ImagesState {
     object Loading : ImagesState
     object NotLoading : ImagesState
     data class Success(val images: List<Image>? = null) : ImagesState
-    data class Error(val message: String) : ImagesState
+    data class Error(val message: String?) : ImagesState {
+        fun toHumanMessage(): String =
+            when {
+                message == null -> "Something went wrong :("
+                message.contains("404") -> "Not found error"
+                message.contains("500") -> "Internal server error"
+                else -> "Unknown Error"
+            }
+    }
 }
 
 sealed interface UIEffect {

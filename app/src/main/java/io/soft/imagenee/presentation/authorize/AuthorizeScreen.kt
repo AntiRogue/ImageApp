@@ -57,7 +57,11 @@ fun AuthorizeScreen(
             .collect {
                 when (it) {
                     is Effect.AuthorizeSuccess -> onAuthorizeSuccess()
-                    is Effect.Error -> Toast.makeText(context, it.message, Toast.LENGTH_SHORT)
+                    is Effect.Error -> Toast.makeText(
+                        context,
+                        it.toHumanMessage(),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }

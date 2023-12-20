@@ -129,7 +129,7 @@ fun MainScreen(
                     }
                 )
 
-                is ImagesState.Error -> Text(text = currentState.message)
+                is ImagesState.Error -> Text(text = currentState.toHumanMessage())
             }
 
             FloatingActionButton(

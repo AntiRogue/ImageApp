@@ -49,7 +49,7 @@ class AuthorizeVM @Inject constructor(
                     localStorage.put(email)
                     _effect.emit(Effect.AuthorizeSuccess)
                 }
-                .onFailure { _effect.emit(Effect.Error(it.message ?: "Something went wrong :(")) }
+                .onFailure { _effect.emit(Effect.Error(it.message)) }
         }
         _loading.update { false }
     }
@@ -81,13 +81,22 @@ class AuthorizeVM @Inject constructor(
                     localStorage.put(email)
                     _effect.emit(Effect.AuthorizeSuccess)
                 }
-                .onFailure { _effect.emit(Effect.Error(it.message ?: "Something went wrong :(")) }
+                .onFailure { _effect.emit(Effect.Error(it.message)) }
         }
         _loading.update { false }
     }
 }
 
 sealed interface Effect {
-    data class Error(val message: String) : Effect
+    data class Error(val message: String?) : Effect {
+        fun toHumanMessage(): String =
+            when {
+                message == null -> "Something went wrong :("
+                message.contains("404") -> "Not found error"
+                message.contains("500") -> "Internal server error"
+                else -> "Unknown Error"
+            }
+    }
+
     object AuthorizeSuccess : Effect
 }
