@@ -24,11 +24,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "BASE_URL", "\"https://imageene-cloud.onrender.com/\""
+            buildConfigField "String", "BASE_URL", "\"https://image-cloud.onrender.com/\""
             minifyEnabled false
         }
         release {
-            buildConfigField "String", "BASE_URL", "\"https://imageene-cloud.onrender.com/\""
+            buildConfigField "String", "BASE_URL", "\"https://image-cloud.onrender.com/\""
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
