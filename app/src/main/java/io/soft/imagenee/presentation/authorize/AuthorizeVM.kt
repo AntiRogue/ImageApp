@@ -36,7 +36,7 @@ class AuthorizeVM @Inject constructor(
             || email.contains("@").not()
         ) {
             viewModelScope.launch {
-                _effect.emit(Effect.Error(message = "Invalid inputs"))
+                _effect.emit(Effect.Error("422"))
             }
             return
         }
@@ -68,7 +68,7 @@ class AuthorizeVM @Inject constructor(
             || email.contains("@").not()
         ) {
             viewModelScope.launch {
-                _effect.emit(Effect.Error("Invalid inputs"))
+                _effect.emit(Effect.Error("422"))
             }
             return
         }
@@ -93,6 +93,7 @@ sealed interface Effect {
             when {
                 message == null -> "Something went wrong :("
                 message.contains("404") -> "Not found error"
+                message.contains("422") -> "Invalid credentials"
                 message.contains("500") -> "Internal server error"
                 else -> "Unknown Error"
             }
